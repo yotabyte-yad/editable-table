@@ -15,6 +15,15 @@ $.fn.editableTableWidget = function (options) {
 			showEditor = function (select) {
 				active = element.find('td:focus');
 				if (active.length) {
+					
+					// Prevent edit of the columns specified added by Yadnyesh 11/18
+					//https://github.com/mindmup/editable-table/pull/18/files?short_path=04c6e90
+					
+					if ($.inArray(active.index() + 1, activeOptions.preventColumns) != -1) {
+						active.blur();
+						return;
+					}
+					
 					editor.val(active.text())
 						.removeClass('error')
 						.show()
@@ -128,4 +137,3 @@ $.fn.editableTableWidget.defaultOptions = {
 					  'border', 'border-top', 'border-bottom', 'border-left', 'border-right'],
 	editor: $('<input>')
 };
-
